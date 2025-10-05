@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Recommendation System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Navbar Links Animation */
+    .animated-link {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .animated-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .animated-link:hover {
+      color: #d4f8e8;
+    }
+
+    .animated-link:hover::after {
+      width: 100%;
+    }
+
+    /* Card Container */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      max-width: 1200px;
+      margin: 40px auto;
+    }
+
+    /* Individual Card */
+    .card {
+      flex: 0 1 calc(20% - 18px);
+      background-color: #1e1e2f;
+      color: #f1f1f1;
+      border: 1px solid #00bcd4;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 188, 212, 0.6);
+    }
+
+    .card img {
+      width: 100%;
+      height: 65%;
+      object-fit: contain;
+      background-color: #fff;
+      border-bottom: 1px solid #00bcd4;
+    }
+
+    .card-body {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .card h2 {
+      font-size: 15px;
+      height: 38px;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .card h4 {
+      font-size: 13px;
+      margin: 3px 0;
+    }
+
+    .label {
+      color: #9e9e9e; /* Gray color for labels */
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg" style="background:#00a65a;">
+  <a class="navbar-brand text-white ms-3" href="/">My Book Recommender</a>
+  <ul class="navbar-nav ms-auto me-3">
+    <li class="nav-item">
+      <a class="nav-link text-white animated-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white animated-link" href="/recommend">Recommend</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white animated-link" href="#">Contact</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container">
+  <h1 style="color: white; font-size: 40px; font-weight: 600; margin-left: 60px; margin-top: 30px;">
+    Recommended Books
+  </h1>
+
+  <form action="/recommend_books" method="post">
+      <input name="u_input" type="text" class="form-control" placeholder="Enter book name"><br>
+      <input name="num_suggestions" type="number" class="form-control" placeholder="How many suggestions?" min="1" max="20"><br>
+      <input type="submit" class="btn btn-lg btn-warning" value="Get Recommendations">
+  </form>
+
+  {% if message %}
+  <div class="alert alert-warning mt-4 mx-auto"
+       style="max-width: 600px;
+              font-size: 22px;
+              font-weight: 600;
+              color: #856404;
+              background-color: #fff3cd;
+              border: 1px solid #ffeeba;
+              border-radius: 12px;
+              padding: 18px 25px;
+              text-align: center;
+              box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+              transition: all 0.3s ease;">
+    ⚠️ {{ message }}
+  </div>
+{% endif %}
+
+  {% if data %}
+    <div class="card-container">
+      {% for i in data %}
+        <div class="card">
+          <img src="{{ i[2] }}" alt="Book cover">
+          <div class="card-body">
+            <h2>{{ i[0] }}</h2>
+            <h4><span class="label">Author:</span> {{ i[1] }}</h4>
+            <h4><span class="label">Publication Year:</span> {{ i[3] }}</h4>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+
+
+
+
+</div>
+
+</body>
+</html>
